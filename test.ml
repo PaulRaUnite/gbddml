@@ -14,3 +14,5 @@ let sl = Bdd.list_of_support z
 let _ = List.iter (printf "%d; ") sl
 let _ = printf "\n"
 let _ = Printf.printf "%b\n" @@ Bdd.is_complemented (Bdd.nidy 1)
+let _ = Printf.printf "%b\n" @@ Bdd.is_complemented (Bdd.dfalse ())
+let _ = Printf.printf "%b\n" @@ Bdd.is_complemented (Bdd.dtrue ())

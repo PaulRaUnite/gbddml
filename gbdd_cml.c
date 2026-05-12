@@ -200,7 +200,6 @@ CHECK_NOT_NULL(res);
 value gbdd_cml_is_complemented(value b) {
 	CAMLparam1(b);
 CHECK_NOT_NULL(b);
-CHECK_NOT_LEAF(b);
 	CAMLreturn(Val_int((GBdd_value(b)->is_complemented())));
 }
 
