@@ -2,6 +2,7 @@
 #include <stdio.h>
 //#include <values.h>
 #include <memory.h>
+
 #define MAXINT ((int)((unsigned)(~(unsigned)0) >> 1))
 
 /****************************************************************
@@ -19,10 +20,10 @@ simple !
 0) Versions :
 -------------
 
-	const char* GBdd::version() (méthode statique)
+	const char* GBdd::version() (mï¿½thode statique)
 
 	1.1 
-	Compatibilité avec g++ > 4
+	Compatibilitï¿½ avec g++ > 4
 
 	1.0 (novembre 2001) : 
 	- gestion des versions,
@@ -50,7 +51,7 @@ ________________________________
 
 4) Comparaison entre GBdd : 
 ___________________________
-- les opérateurs == et != sont definis et rendent un int (0 ou 1).
+- les opï¿½rateurs == et != sont definis et rendent un int (0 ou 1).
 (N.B. ne pas confondre avec eq et neq !)
 
 - la fonction test_impl(t1,t2) teste si t1 => t2 (resultat 0 ou 1)
@@ -227,13 +228,13 @@ int eval_bool(int (*f)(int));
 Meme chose mais applicable sur les bdd purement booleens : le resultat
 est 0 pour false_bdd(), 1 pour true_bdd().
 
-10) Liste Chaînée de bdds :
+10) Liste Chaï¿½nï¿½e de bdds :
 ---------------------------
-	Attention très sommaire : la liste vide est codée par NULL,
-	il n'y a aucun partage ni gestion mémoire =>
-	- ne manipuler QUE les têtes de liste,
-	- pensez à détruire les listes inutiles (N.B. la destruction est 
-	récursive)
+	Attention trï¿½s sommaire : la liste vide est codï¿½e par NULL,
+	il n'y a aucun partage ni gestion mï¿½moire =>
+	- ne manipuler QUE les tï¿½tes de liste,
+	- pensez ï¿½ dï¿½truire les listes inutiles (N.B. la destruction est 
+	rï¿½cursive)
 
 Construction :
 	GBddList(GBdd s, GBddList* nxt);
@@ -241,7 +242,7 @@ Construction :
 Destruction :
 	~GBddList()
 
-Tête et queue :
+Tï¿½te et queue :
 	GBdd head()
 	GBddList* tail()
 
@@ -258,10 +259,10 @@ ANNEXE :
 ----------------------------------------------------------------------
 	Pour des traitements compliques : 
 
-A0) Général :
+A0) Gï¿½nï¿½ral :
 ++++++++++++++
 void GBdd::set_verbose_mode()
-int GBdd::garbage_collect() -> renvoie le %age de noeuds libérés
+int GBdd::garbage_collect() -> renvoie le %age de noeuds libï¿½rï¿½s
 
 A1) hashage :
 ++++++++++++++
@@ -343,7 +344,7 @@ A8) Renommage des arguments
 ++++++++++++++++++++++++++++
 
 GBdd GBdd::rename(int (*f)(int)) Renvoie un bdd ou les arguments
-ont été renommés par f.
+ont ï¿½tï¿½ renommï¿½s par f.
 	(l'argument i devient l'argument f(i)). 
 	ATTENTION ! Erreur si un argument f(i) est ne'gatif!
 
@@ -404,7 +405,6 @@ friend void DUMP_LIST(GBddList* b);
 	};
 
 	/* acces aux informations de la GBddValue */
-	static int sign(GBddValue v);
 	static int is_bool(GBddValue v);
 	static GBddNode* node(GBddValue v);
 	static void set_bool(GBddValue& v);
@@ -450,6 +450,7 @@ friend void DUMP_LIST(GBddList* b);
 	int rec_unsigned_size(int mark) const;
 
 public :
+	static int sign(GBddValue v);
 
 	//POUR LES STATS :
 	static int total_nb_nodes();
@@ -483,7 +484,7 @@ public :
 	static int garbage_collect();
 
 	/*
-	Le nombre de noeuds réellement utilisés
+	Le nombre de noeuds rï¿½ellement utilisï¿½s
 	*/
 	static int used_nodes();
 
@@ -515,11 +516,15 @@ public :
 
 	/* Un codage "disperseur" GBdd -> int */
 	int hash(int max) const;
-	int code() const;
+	long code() const;
+	unsigned long int ucode() const;
 
-	/* associe une info */
+	/* associe une info de type GBdd */
 	void put_res(int index, int op_ident, const GBdd& res) const;
 	GBdd get_res(int index, int op_ident) const;
+	/* idem avec une info qq */
+	void put_any_res(int index, int op_ident, void* res) const;
+	void* get_any_res(int index, int op_ident) const;
 
 	void put_mark(int mark_key, void* mark) const;
 	void* get_mark(int mark_key) const;
@@ -593,7 +598,7 @@ public :
 	void* eval(int (*f)(int)) const;
 	int eval_bool(int (*f)(int)) const;
 
-	// retourne 0 SSI égalité
+	// retourne 0 SSI ï¿½galitï¿½
 	friend int compare(const GBdd& t1, const GBdd& t2);
 
 	//Comparaisons
@@ -673,9 +678,9 @@ public :
 	void print_mons_ln() const;
 };
 /*---------------------------------------------------------------
-   Version 1.1 => à partir de g++ > 4
-   les fonctions friend doivent être re-déclarées en dehors
-   de la classe pour être référencées comme exporté dans le .o
+   Version 1.1 => ï¿½ partir de g++ > 4
+   les fonctions friend doivent ï¿½tre re-dï¿½clarï¿½es en dehors
+   de la classe pour ï¿½tre rï¿½fï¿½rencï¿½es comme exportï¿½ dans le .o
 ----------------------------------------------------------------*/
 
 const GBdd& true_bdd();	
@@ -684,7 +689,7 @@ GBdd null_bdd();	//Un GBdd non initialise
 GBdd leaf(void* i); // Feuille decoree avec "i"
 GBdd idy(int i); // Fonction identite sur la ieme var
 GBdd nidy(int i); // Fonction complement sur la ieme var
-int compare(const GBdd& t1, const GBdd& t2); // retourne 0 SSI égalité
+int compare(const GBdd& t1, const GBdd& t2); // retourne 0 SSI ï¿½galitï¿½
 //Comparaisons
 int operator==(const GBdd& t1, const GBdd& t2);
 int operator!=(const GBdd& t1, const GBdd& t2);
@@ -716,7 +721,7 @@ GBdd forall(const GBdd& vars, const GBdd& f);
 /*---------------------------------------------------------------
 	Classe GBddList 
 -----------------------------------------------------------------
-	Liste chaînée sommaire
+	Liste chaï¿½nï¿½e sommaire
 ---------------------------------------------------------------*/
 class GBddList {
 	int len;
@@ -734,14 +739,14 @@ class GBddList {
 public:
    GBdd head(){ return son; }
    GBddList* tail(){ return nxt; }
-	//Renvoie le suivant et détruit la tête
+	//Renvoie le suivant et dï¿½truit la tï¿½te
 	GBddList* tail_then_del(){
 		GBddList* r = nxt;
 		nxt = NULL;
 		delete (this);
 		return r;
 	}
-	int length(){ if(! this) return 0; uplast(); return len; }
+	int length(){ if(!this) return 0; uplast(); return len; }
 	GBddList(GBdd s){ len = 1; son = s; nxt = NULL; lst = this; }
    GBddList(GBdd s, GBddList* t){
 		son = s; nxt = t; 

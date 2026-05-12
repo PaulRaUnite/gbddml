@@ -23,7 +23,7 @@ void DUMP_BDD(GBdd b){
 	} else if(b == false_bdd()){
 		printf("false_bdd\n");
 	} else if(b.is_leaf()){
-		printf("leaf{val=0x%X}\n", (unsigned int)b.leaf_info());
+		printf("leaf{val=0x%lX}\n", (unsigned long)b.leaf_info());
 	} else if(b.is_bool()){
 		GBddValue hv = b.high_part().value();
 		GBddValue lv = b.low_part().value();
@@ -33,9 +33,9 @@ void DUMP_BDD(GBdd b){
 		} else if(hv == GBdd::false_value()){
 			printf(" 0 : ");
 		} else {
-			printf(" %c 0x%x : ",
+			printf(" %c 0x%lx : ",
 				GBdd::sign(hv)? '-' : '+',
-				(unsigned int)GBdd::node(hv)
+				(unsigned long)GBdd::node(hv)
 			);
 		}
 		if(lv == GBdd::true_value()){
@@ -43,9 +43,9 @@ void DUMP_BDD(GBdd b){
 		} else if(lv == GBdd::false_value()){
 			printf(" 0 }\n");
 		} else {
-			printf(" %c 0x%x }\n",
+			printf(" %c 0x%lx }\n",
 				GBdd::sign(lv)? '-' : '+',
-				(unsigned int)GBdd::node(lv)
+				(unsigned long)GBdd::node(lv)
 			);
 			
 		}
@@ -288,7 +288,7 @@ GBdd::GBdd(GBddValue v){
 }
 
 int GBddList::size() const {
-	if(! this) return 0;
+	if(!(void*)this) return 0;
 	GBddList* p;
 	int res = 0;
 	int mark = GBdd::get_op_ident();
@@ -398,7 +398,7 @@ void GBddNode::dbg_print(int mark){
 		size_mark = mark;
 		printf("%3d = ", dbg_index);
 		if(index == GBddNode::leaf_index()){
-        printf("[0x%x];", (long)info); 
+			printf("[0x%lx];", (unsigned long)info);
 			printf("\n");
 		} else {
 			printf("(%3d)?", index);
@@ -510,6 +510,37 @@ GBdd GBdd::get_res(int index, int op_ident) const {
 	}
 }
 
+void GBdd::put_any_res(int index, int op_ident, void* res) const {
+	if(is_leaf()) return; 
+	GBddNode* n = GBdd::node(value());
+	if(n){
+		if(sign(value())){
+			n->unary_res[index].set_direct(op_ident, (GBddValue)res);
+		} else {
+			n->unary_res[index].set_indirect(op_ident, (GBddValue)res);
+		}
+	}
+}
+
+void* GBdd::get_any_res(int index, int op_ident) const {
+	if(is_leaf()) return (void*)NULL;
+	GBddNode* n = GBdd::node(value());
+	if(n){
+		if(sign(value())){
+			return (void*)(
+				n->unary_res[index].get_direct(op_ident)
+			);
+		} else {
+			return (void*)(
+				n->unary_res[index].get_indirect(op_ident)
+			);
+		}
+	} else {
+		return (void*)(NULL);
+	}
+}
+
+
 // Decomposition de Shannon :
 int GBdd::root_var() const {
 	return GBdd::node(value())->index;
@@ -528,8 +559,8 @@ int GBdd::hash(int max) const {
 	);
 }
 
-int GBdd::code() const {
-  int i = (long)value();
+long GBdd::code() const {
+	long i = (long)value();
 	return (i >= 0)? i : -i;
 }
 

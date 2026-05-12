@@ -31,7 +31,7 @@ typedef GBdd* PGBdd;
 extern "C" {
 
 /*------------------------------------------------------
-Les références "GBdd*" sont stockées dans des
+Les rï¿½fï¿½rences "GBdd*" sont stockï¿½es dans des
 custom blocks caml
 ------------------------------------------------------*/
 
@@ -53,7 +53,7 @@ inline GBdd* GBdd_value(value v){
 #endif
 
 //------------------------------
-//table des opérations
+//table des opï¿½rations
 //------------------------------
 //finalization:
 void finalize_gbdd_block(value v){
@@ -113,7 +113,7 @@ static void set_gbdd_value(value b, const GBdd& v){
 }
 
 /*-------------------------------------------------
-Implémentation des primitives ocaml
+Implï¿½mentation des primitives ocaml
 ---------------------------------------------------
 N.B. on descend "un cran plus bas" que
 l'interface C++ de GBdd, en s'autorisant la
@@ -197,6 +197,13 @@ CHECK_NOT_NULL(res);
 }
 
 // ACCES AUX NOEUDS
+value gbdd_cml_is_complemented(value b) {
+	CAMLparam1(b);
+CHECK_NOT_NULL(b);
+CHECK_NOT_LEAF(b);
+	CAMLreturn(Val_int(GBdd::sign(GBdd_value(b))));
+}
+
 value gbdd_cml_root_var(value b){
 	CAMLparam1(b);
 CHECK_NOT_NULL(b);
