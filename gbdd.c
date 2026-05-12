@@ -313,7 +313,7 @@ int GBdd::unsigned_size() const {
 }
 int GBdd::rec_unsigned_size(int mark) const {
 	if(is_leaf()) return 0;
-	if(get_mark(mark)) return 0; //déjà compté
+	if(get_mark(mark)) return 0; //dï¿½jï¿½ comptï¿½
 	put_mark(mark, (void*)1);
 	return (
 		1 +
@@ -594,6 +594,10 @@ GBdd GBdd::high_part(int x) const {
 
 GBdd GBdd::low_part(int x) const {
 	return GBdd(GBdd::manager.set_false(value(), x));
+}
+
+bool GBdd::is_complemented() const {
+	return GBdd::sign(value());
 }
 
 int GBdd::depends(int x) const {

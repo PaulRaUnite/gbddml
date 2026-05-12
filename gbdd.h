@@ -405,6 +405,7 @@ friend void DUMP_LIST(GBddList* b);
 	};
 
 	/* acces aux informations de la GBddValue */
+	static int sign(GBddValue v);
 	static int is_bool(GBddValue v);
 	static GBddNode* node(GBddValue v);
 	static void set_bool(GBddValue& v);
@@ -450,7 +451,6 @@ friend void DUMP_LIST(GBddList* b);
 	int rec_unsigned_size(int mark) const;
 
 public :
-	static int sign(GBddValue v);
 
 	//POUR LES STATS :
 	static int total_nb_nodes();
@@ -561,6 +561,7 @@ public :
 	// IDENTITE POUR LES CONSTANTES !
 	GBdd high_part() const;
 	GBdd low_part() const;
+	bool is_complemented() const;
 
 	// Decomposition selon une variable qq :
 	// IDENTITE POUR LES CONSTANTES !

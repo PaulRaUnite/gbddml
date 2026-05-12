@@ -133,7 +133,7 @@ value gbdd_cml_hash(value b){
 CHECK_NOT_NULL(b);
 	GBdd* pb = GBdd_value(b);
 	long res = _30_BITS_CODE(pb->code());
-printf("gbdd_cml_hash->%d\n", res);
+printf("gbdd_cml_hash->%ld\n", res);
 	CAMLreturn(Val_long(res));
 }
 
@@ -201,7 +201,7 @@ value gbdd_cml_is_complemented(value b) {
 	CAMLparam1(b);
 CHECK_NOT_NULL(b);
 CHECK_NOT_LEAF(b);
-	CAMLreturn(Val_int(GBdd::sign(GBdd_value(b))));
+	CAMLreturn(Val_int((GBdd_value(b)->is_complemented())));
 }
 
 value gbdd_cml_root_var(value b){

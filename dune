@@ -10,3 +10,9 @@
   (flags -x c++ -g -O2 -fno-operator-names -fPIC))
  (c_library_flags -lstdc++)
  (synopsis "gbddml: A BDD library in C + an ocaml wrapper"))
+
+(executable
+ (name test)
+ (public_name test)
+ (modules test)
+ (libraries gbddml))

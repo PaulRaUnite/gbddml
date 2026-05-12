@@ -1,4 +1,3 @@
-open Bdd
 open Printf
 
 (*let _ = Bdd.init ()
@@ -14,3 +13,4 @@ let _ = Bdd.print_mons z
 let sl = Bdd.list_of_support z
 let _ = List.iter (printf "%d; ") sl
 let _ = printf "\n"
+let _ = Printf.printf "%b\n" @@ Bdd.is_complemented (Bdd.nidy 1)
